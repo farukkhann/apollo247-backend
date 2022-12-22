@@ -8,15 +8,13 @@ require("dotenv").config()
 const bcrypt=require("bcrypt")
 const jwt=require("jsonwebtoken")
 
+const authenticate=require("../middlewares/authentication")
 
-function authenticate(req,res,next){
-    // if(req.body)
-    console.log(req.headers)
-}
+
 
 
 function createNewToken(user){
-   return jwt.sign(user, process.env.JWT_SECERET_KEY)
+   return jwt.sign({user}, process.env.JWT_SECERET_KEY)
 }
 
 
@@ -39,7 +37,7 @@ async(req,res)=>{
 
         //create a token using user 
         const user= await User.create(req.body)
-        const token= createNewToken(req.body)
+        const token= createNewToken(user)
         res.status(200).send({user,token})
     } catch (error) {
         res.status(500).send(error.message)
@@ -58,17 +56,18 @@ async (req,res)=>{
            return res.status(400).json({ errors: errors.array() });
         }
         //checking user is registered or not
-        const searchUser= await User.findOne({email:req.body.email})
-        if(!searchUser) return res.status(400).send("Please check your email and make sure you are registered")
+        const user= await User.findOne({email:req.body.email})
+        if(!user) return res.status(400).send("Please check your email and make sure you are registered")
 
         //check password
-       const passwordcheck=searchUser.checkpass(req.body.password)
+       const passwordcheck=user.checkpass(req.body.password)
        if(!passwordcheck) return res.status(400).send("Please Enter correct password")
-
-       const token= createNewToken(req.body)
-
-        res.send({searchUser,token})
+        console.log(user)
+       const token=createNewToken(user)
+       console.log(token)
+        res.send({user,token})
     } catch (error) {
+        console.log(error)
         res.status(500).send(error.message)
     }
 })
