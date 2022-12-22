@@ -12,6 +12,10 @@ app.use("/auth",userController)
 const productController=require("./controllers/product.controller")
 app.use("/products",productController)
 
+const cartController=require("./controllers/cart.controller")
+app.use("/cart",cartController)
+
+
 
 app.listen(port,async()=>{
     try {
