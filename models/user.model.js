@@ -18,6 +18,7 @@ userSchema.methods.checkpass=function(password){
 
 
 
+
 userSchema.pre("save",function(next){
     const hash= bicrypt.hashSync(this.password,8)
     this.password=hash

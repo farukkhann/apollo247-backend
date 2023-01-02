@@ -9,9 +9,10 @@ const Product=require("../models/product.model")
 const authenticate = require("../middlewares/authentication")
 const User = require("../models/user.model")
 
-router.delete("/",authenticate,async(req,res)=>{
+router.delete("/:id",authenticate,async(req,res)=>{
     try {
-        const response=await Product.deleteMany()
+        const id=req.params.id
+        const response=await Product.deleteOne(id)
         res.send(response)
     } catch (error) {
         res.status(500).send(error.message)

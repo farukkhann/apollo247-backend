@@ -3,7 +3,7 @@ require('dotenv').config()
 mongoose.set("strictQuery",false)
 
 const connect=()=>{
-    return mongoose.connect(process.env.MONGO_URI)
+    return  mongoose.connect(process.env.MONGO_URI)
 }
 
 module.exports=connect

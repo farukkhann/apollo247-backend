@@ -34,7 +34,6 @@ async(req,res)=>{
         //check if email already exists
         const emailUser= await User.findOne({email:req.body.email})
         if(emailUser) return res.status(400).send("Email already exists")
-
         //create a token using user 
         const user= await User.create(req.body)
         const token= createNewToken(user)
@@ -43,6 +42,11 @@ async(req,res)=>{
         res.status(500).send(error.message)
     }
 })
+
+
+
+
+
 
 
 router.post("/login",
